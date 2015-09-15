@@ -1,0 +1,21 @@
+
+* Add a license file for libvfrun:
+	WARNING: Could not copy license file libvfrun.so.1.0.1: [Errno 1] Operation not permitted
+
+* Disable GNU_HASH QA checks for libvfrun:
+	WARNING: QA Issue: No GNU_HASH in the elf binary: '/v2014.12/build/tmp-angstrom_v2014_12-glibc/work/armv7at2-vfp-neon-angstrom-linux-gnueabi/libvfrun/2.20-r0/packages-split/libvfrun/usr/lib/libvfrun.so.1.0.1' [ldflags]
+
+* Properly map OE archs to pareon archs (x86<>i686 is probably wrong)
+
+* Add python snippet to limit build to softfp on arm, e.g.:
+python __anonymous() {
+    tunes = bb.data.getVar("TUNE_FEATURES", d, 1)
+    if not tunes:
+        return
+    pkgn = bb.data.getVar("PN", d, 1)
+    pkgv = bb.data.getVar("PV", d, 1)
+    if "callconvention-hard" in tunes:
+        bb.warn("%s-%s ONLY supports softfp mode for now" % (pkgn, pkgv))
+        raise bb.parse.SkipPackage("%s-%s ONLY supports softfp mode for now" % (pkgn, pkgv))
+}
+
