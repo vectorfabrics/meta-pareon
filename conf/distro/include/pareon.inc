@@ -1,5 +1,8 @@
 # Paths and triplets for the pareon compiler
 
+# soft-float arm target
+#PAREON_ARCH_arm = "arm-linux-gnueabi"
+
 PAREON_ARCH_arm = "arm-linux-gnueabihf"
 PAREON_ARCH_x86 = "i686-linux-gnu"
 PAREON_ARCH_x86-64 = "x86_64-linux-gnu"
