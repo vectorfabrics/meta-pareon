@@ -1,18 +1,19 @@
 # Paths and triplets for the pareon compiler
 
-PAREON_ARCH_arm = "arm-linux-gnueabi"
+PAREON_ARCH_arm = "arm-linux-gnueabihf"
 PAREON_ARCH_x86 = "i686-linux-gnu"
 PAREON_ARCH_x86-64 = "x86_64-linux-gnu"
-
 PAREON_ARCH ?= "invalid"
 
-PAREONPV ?= "2.20"
-PAREONDIR = "/opt/vectorfabrics/pareon-${PAREONPV}"
+PAREON_VERSION ?= "2.23"
+PAREON_PRODUCT ?= "verify"
 
-PATH_append = ":${PAREONDIR}/${PAREON_ARCH}/bin"
+PAREON_DIR = "/opt/vectorfabrics/pareon-${PAREON_VERSION}/${PAREON_PRODUCT}"
+PAREON_LIBDIR = "${PAREON_DIR}/${PAREON_ARCH}/lib"
+PAREON_BINDIR = "${PAREON_DIR}/${PAREON_ARCH}/bin"
 
-export ARM_TOOLCHAIN="${STAGING_DIR_HOST}${prefix}"
-export ARM_SYSROOT="${STAGING_DIR_HOST}"
+PATH_append = ":${PAREON_BINDIR}"
+
+export ARM_HF_TOOLCHAIN="${STAGING_DIR_HOST}${prefix}"
+export ARM_HF_SYSROOT="${STAGING_DIR_HOST}"
 export VF_TARGET_TRIPLE="${TARGET_SYS}"
-
-# export CFLAGS += "-B${STAGING_BINDIR_TOOLCHAIN}"
