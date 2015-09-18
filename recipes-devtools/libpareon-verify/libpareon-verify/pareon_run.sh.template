@@ -1,5 +1,19 @@
 #!/bin/sh
 
+# if you want libpareon_verify to output to a socket on the target
+# and have the host's pareon verify connect to it:
+# export VFRUN_OUT=socket
+
+# if you want libpareon_verify to generate trace files on the target
+# that you can copy over to the host yourself:
+# (trace files will be called: )
+# export VFRUN_OUT=file
+
+# if want to use the remote analysis framework, pareon verify will
+# tell you what to put in the next line:
+# export VFRUN_OUT=pareon://10.0.0.1:6842/somewhere
+
+# fallback
 if [ -z "$VFRUN_OUT" ]
 then
     export VFRUN_OUT="file"
