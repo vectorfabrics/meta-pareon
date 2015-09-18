@@ -32,3 +32,5 @@ Known issues:
   This breaks instrumentation
 * applications should not be build with MMX/SSE/AVX optimizations, e.g. 
   qtbase5 will break.
+* applications that use __builtin_return_address fail to compile correctly,
+  in most cases the code itself can deal with this if configured appropriately.
