@@ -9,6 +9,9 @@ INHIBIT_DEFAULT_DEPS = "1"
 
 SRC_URI += "file://pareon_run.sh.template"
 
+FILES_${PN} += "${PAREON_LIBDIR}/libpareon_verify.so.* ${PAREON_LIBDIR}/libstdc++.so.*"
+FILES_${PN}-dbg += "${PAREON_LIBDIR}.debug"
+
 do_compile() {
     awk -v PAREON_LIBDIR=${PAREON_LIBDIR} '{gsub(/@@PAREON_LIBDIR@@/, PAREON_LIBDIR); print}' < ${WORKDIR}/pareon_run.sh.template > ${WORKDIR}/pareon_run.sh
 }
@@ -20,6 +23,6 @@ do_install() {
 
     # copy libpareon_verify and libstdc++
     install -d ${D}${PAREON_LIBDIR}
-    cp -a ${PAREON_LIBDIR}/* ${D}${PAREON_LIBDIR}
-    cp -a ${PAREON_CXXDIR}/* ${D}${PAREON_LIBDIR}
+    cp -a ${PAREON_LIBDIR}/libpareon_verify.so.* ${D}${PAREON_LIBDIR}
+    cp -a ${PAREON_CXXDIR}/libstdc++.so.* ${D}${PAREON_LIBDIR}
 }
