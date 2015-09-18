@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ -z "$VFRUN_OUT" ]
+then
+    export VFRUN_OUT="file"
+fi
+
+# Location of libpareon_verify.so and libstdc++.so
+
+export LD_LIBRARY_PATH="@@PAREON_LIB_DIR@@:$LD_LIBRARY_PATH"
+
+exec "$@"
