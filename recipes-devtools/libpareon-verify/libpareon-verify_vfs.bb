@@ -16,7 +16,7 @@ RDEPENDS_libpareon-verify = "libstdc++ glibc libgcc"
 SRC_URI += "file://pareon_run.sh.template"
 
 FILES_${PN} += "${PAREON_LIBDIR}/libpareon_verify.so.* ${PAREON_LIBDIR}/libstdc++.so.*"
-FILES_${PN}-dbg += "${PAREON_LIBDIR}.debug"
+FILES_${PN}-dbg += "${PAREON_LIBDIR}/.debug"
 
 do_compile() {
     awk -v PAREON_LIBDIR=${PAREON_LIBDIR} '{gsub(/@@PAREON_LIBDIR@@/, PAREON_LIBDIR); print}' < ${WORKDIR}/pareon_run.sh.template > ${WORKDIR}/pareon_run.sh
