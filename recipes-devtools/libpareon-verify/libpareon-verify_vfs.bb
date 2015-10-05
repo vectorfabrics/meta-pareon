@@ -1,4 +1,5 @@
-require conf/distro/include/pareon.inc
+# require this in your local.conf
+# require conf/distro/include/pareon.inc
 
 DESCRIPTION = "Pareon Verify shared library"
 LICENSE = "Proprietary"
