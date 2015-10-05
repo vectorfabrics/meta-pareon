@@ -10,6 +10,8 @@ INHIBIT_DEFAULT_DEPS = "1"
 # Hide QA warning: "No GNU_HASH in the elf binary"
 INSANE_SKIP_libpareon-verify += "ldflags"
 
+RDEPENDS_libpareon-verify = "libstdc++ glibc libgcc"
+
 SRC_URI += "file://pareon_run.sh.template"
 
 FILES_${PN} += "${PAREON_LIBDIR}/libpareon_verify.so.* ${PAREON_LIBDIR}/libstdc++.so.*"
