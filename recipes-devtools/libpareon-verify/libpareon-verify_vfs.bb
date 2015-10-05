@@ -9,9 +9,9 @@ LIC_FILES_CHKSUM = "file://${PAREON_DIR}/EULA.exec;md5=1c43b59db6eab4e68de955515
 INHIBIT_DEFAULT_DEPS = "1"
 
 # Hide QA warning: "No GNU_HASH in the elf binary"
-INSANE_SKIP_libpareon-verify += "ldflags"
+INSANE_SKIP_${PN} += "ldflags"
 
-RDEPENDS_libpareon-verify = "libstdc++ glibc libgcc"
+RDEPENDS_${PN} = "libstdc++ glibc libgcc"
 
 SRC_URI += "file://pareon_run.sh.template"
 
