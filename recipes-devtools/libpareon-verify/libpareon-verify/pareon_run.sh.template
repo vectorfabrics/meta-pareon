@@ -19,8 +19,9 @@ then
     export VFRUN_OUT="file"
 fi
 
-# Location of libpareon_verify.so and libstdc++.so
+# Location of libpareon.so and libstdc++.so
 
 export LD_LIBRARY_PATH="@@PAREON_LIBDIR@@:$LD_LIBRARY_PATH"
 
 exec "$@"
+

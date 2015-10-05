@@ -15,7 +15,7 @@ RDEPENDS_${PN} = "libstdc++ glibc libgcc"
 
 SRC_URI += "file://pareon_run.sh.template"
 
-FILES_${PN} += "${PAREON_LIBDIR}/libpareon_verify.so.* ${PAREON_LIBDIR}/libstdc++.so.*"
+FILES_${PN} += "${PAREON_LIBDIR}/libpareon.so.* ${PAREON_LIBDIR}/libstdc++.so.*"
 FILES_${PN}-dbg += "${PAREON_LIBDIR}/.debug"
 
 do_compile() {
@@ -27,8 +27,9 @@ do_install() {
     install -d ${D}${bindir}
     install -m 0755 ${WORKDIR}/pareon_run.sh ${D}${bindir}
 
-    # copy libpareon_verify and libstdc++
+    # copy libpareon and libstdc++
     install -d ${D}${PAREON_LIBDIR}
-    cp -a ${PAREON_LIBDIR}/libpareon_verify.so.* ${D}${PAREON_LIBDIR}
+    cp -a ${PAREON_LIBDIR}/libpareon.so.* ${D}${PAREON_LIBDIR}
     cp -a ${PAREON_CXXDIR}/libstdc++.so.* ${D}${PAREON_LIBDIR}
 }
+
