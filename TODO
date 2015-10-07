@@ -1,31 +1,4 @@
-The meta-pareon layer is still  work-in-progress.
-
-The following items are known TODOs:
-
-* Disable QA checks for libpareon-verify:
-
-	WARNING: QA Issue: No GNU_HASH in the elf binary: '/v2014.12/build/tmp-angstrom_v2014_12-glibc/work/armv7at2-vfp-neon-angstrom-linux-gnueabi/libvfrun/2.20-r0/packages-split/libvfrun/usr/lib/libvfrun.so.1.0.1' [ldflags]
-
-	WARNING: QA Issue: libpareon-verify rdepends on libstdc++, but it isn't a build dependency? [build-deps]
-	WARNING: QA Issue: libpareon-verify rdepends on glibc, but it isn't a build dependency? [build-deps]
-	WARNING: QA Issue: libpareon-verify rdepends on libgcc, but it isn't a build dependency? [build-deps]
-
-  WORKAROUND: No workaround needed, code compiles as usual and will run as
-  expected.
-
-* For proper C++ support, Pareon Verify also ships an instrumented libstdc++.
-  meta-pareon needs to ensure that the headers of the  instrumented libstdc++ 
-  are used during compilation and that the instrumented libstdc++ ends up on
-  the target.
-  WORKAROUND: even without using libstdc++, C++ support works.
-  But e.g. if you push objects with pointers into a container (triggering a 
-  copy) and delete the original object, Pareon Verify might report a memory 
-  leak if that was the last known pointer to an area - even though there is
-  a copy object holding a pointer inside the container.
-
-* Handle the known issues below:
-
-
+The meta-pareon layer is still work-in-progress.
 
 Known issues:
 * alsa-lib (and several other recipes) in ./configure redefine CC to gcc.
