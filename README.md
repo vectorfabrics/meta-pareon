@@ -4,7 +4,7 @@ Meta-pareon
 Introduction
 -------------------------
 
-The official OpenEmbedded/Yocto BSP layer for the VectorFabrics pareon compiler.
+The official OpenEmbedded/Yocto BSP layer for the VectorFabrics Pareon compiler.
 
 The meta-pareon layer depends on:
 
@@ -30,7 +30,7 @@ To (re)build recipes with the pareon compiler run the generator script:
 	user@ubuntu-vm:/OE/sources/meta-pareon$ ./scripts/generate-conf.sh helloworld
 	require conf/distro/include/pareon.inc
 
-	DEPENDS_append_pn-helloworld = " libpareon-verify"
+	DEPENDS_append_pn-helloworld = " libpareon"
 	CC_pn-helloworld        = "vfcc"
 	CXX_pn-helloworld       = "vf++"
 	LD_pn-helloworld        = "vfld"
@@ -41,12 +41,12 @@ The script accepts multiple recipe names:
 	user@ubuntu-vm:/OE/sources/meta-pareon$ ./scripts/generate-conf.sh helloworld bash
 	require conf/distro/include/pareon.inc
 
-	DEPENDS_append_pn-helloworld = " libpareon-verify"
+	DEPENDS_append_pn-helloworld = " libpareon"
 	CC_pn-helloworld        = "vfcc"
 	CXX_pn-helloworld       = "vf++"
 	LD_pn-helloworld        = "vfld"
 
-	DEPENDS_append_pn-bash = " libpareon-verify"
+	DEPENDS_append_pn-bash = " libpareon"
 	CC_pn-bash      = "vfcc"
 	CXX_pn-bash     = "vf++"
 	LD_pn-bash      = "vfld"
@@ -60,6 +60,23 @@ Due to the way cmake tries to find the binutils executables, it is necessary to 
 
     EXTRA_OECMAKE_append_pn-synergy = " -D_CMAKE_TOOLCHAIN_PREFIX=${HOST_PREFIX} "
 
+Pareon Profile
+-------------------------
+
+To use the Pareon Profile compiler and libraries, add the following line to your local.conf:
+
+    PAREON_PRODUCT = "profile"
+
+If that line is ommited, Pareon Verify will be used by default. You may also specify the version through the `PAREON_VERSION` variable, like so:
+
+    PAREON_VERSION = "2.23"
+
+Analyzing programs on the target
+-------------------------
+
+Use the `pareon_run.sh` wrapper script to setup the necessary environment variables when analyzing programs on the target.
+
+    pareon_run.sh program_name
 
 Maintainers
 -------------------------
@@ -67,3 +84,4 @@ Maintainers
 Lessandro Mariano <lessandro@vectorfabrics.com>
 
 Klaas van Gend <klaas@vectorfabrics.com>
+

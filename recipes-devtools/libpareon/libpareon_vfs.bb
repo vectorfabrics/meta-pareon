@@ -1,7 +1,7 @@
 # require this in your local.conf
 # require conf/distro/include/pareon.inc
 
-DESCRIPTION = "Pareon Verify shared library"
+DESCRIPTION = "Pareon shared library"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${PAREON_DIR}/EULA.exec;md5=1c43b59db6eab4e68de95551563c708b"
 
