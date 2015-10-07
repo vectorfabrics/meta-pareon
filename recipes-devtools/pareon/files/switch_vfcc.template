@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ $(basename $0) = "switch_vfcc" ]
+then
+    VFCC="vfcc"
+    GCC="@@CC@@"
+else
+    VFCC="vf++"
+    GCC="@@CXX@@"
+fi
+
+if ! timeout 5m $VFCC "$@"
+then
+    $GCC "$@"
+fi
+
