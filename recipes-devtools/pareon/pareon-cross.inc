@@ -11,21 +11,22 @@ do_compile() {
         -v TOOLCHAIN="${STAGING_DIR_TARGET}${target_prefix}" \
         -v SYSROOT="${STAGING_DIR_TARGET}" \
         -v TRIPLE="${TARGET_SYS}" \
-        '{gsub(/@@LOG@@/, LOG); {gsub(/@@ERR@@/, ERR); gsub(/@@TOOLCHAIN@@/, TOOLCHAIN); gsub(/@@SYSROOT@@/, SYSROOT); gsub(/@@TRIPLE@@/, TRIPLE); print}' \
+        -v CONFIG="${PAREON_DIR}/tools/config/c++.conf" \
+        '{gsub(/@@LOG@@/, LOG); gsub(/@@ERR@@/, ERR); \
+          gsub(/@@TOOLCHAIN@@/, TOOLCHAIN); gsub(/@@SYSROOT@@/, SYSROOT); \
+          gsub(/@@TRIPLE@@/, TRIPLE); gsub(/@@CONFIG@@/, CONFIG); print}' \
         < ${WORKDIR}/vfcc.template > ${WORKDIR}/vfcc.template2
 
     # C compiler
     awk -v GCC="${TARGET_SYS}-gcc ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
         -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vfcc ${TUNE_CCARGS}" \
-        -v CONFIG="" \
-        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); gsub(/@@CONFIG@@/, CONFIG); print}' \
+        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); print}' \
         < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/vfcc
 
     # C++ compiler
     awk -v GCC="${TARGET_SYS}-g++ ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
         -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vf++ ${TUNE_CCARGS}" \
-        -v CONFIG="${PAREON_DIR}/tools/config/c++.conf" \
-        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); gsub(/@@CONFIG@@/, CONFIG); print}' \
+        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); print}' \
         < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/vf++
 }
 

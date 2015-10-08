@@ -14,7 +14,7 @@ export VF_TARGET_TRIPLE="@@TRIPLE@@"
 
 export VFCC_CONFIG="@@CONFIG@@"
 
-if [ -z "$VFCC_CONFIG" ]
+if [ -z "$VFCC_CONFIG" ] || [ ! -f "$VFCC_CONFIG" ]
 then
     unset VFCC_CONFIG
 fi
