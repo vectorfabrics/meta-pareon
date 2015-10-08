@@ -8,11 +8,12 @@ do_compile() {
     # common variables
     awk -v LOG="${PAREON_LOGFILE}" \
         -v ERR="${PAREON_ERRFILE}" \
+        -v TIMEOUT="${PAREON_TIMEOUT}" \
         -v TOOLCHAIN="${STAGING_DIR_TARGET}${target_prefix}" \
         -v SYSROOT="${STAGING_DIR_TARGET}" \
         -v TRIPLE="${TARGET_SYS}" \
         -v CONFIG="${PAREON_DIR}/tools/config/c++.conf" \
-        '{gsub(/@@LOG@@/, LOG); gsub(/@@ERR@@/, ERR); \
+        '{gsub(/@@LOG@@/, LOG); gsub(/@@ERR@@/, ERR); gsub(/@@TIMEOUT@@/, TIMEOUT); \
           gsub(/@@TOOLCHAIN@@/, TOOLCHAIN); gsub(/@@SYSROOT@@/, SYSROOT); \
           gsub(/@@TRIPLE@@/, TRIPLE); gsub(/@@CONFIG@@/, CONFIG); print}' \
         < ${WORKDIR}/vfcc.template > ${WORKDIR}/vfcc.template2
