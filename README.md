@@ -22,22 +22,20 @@ Add this layer to your layerstack the way you usually do, this differs between p
 To (re)build recipes with the pareon compiler run the generator script:
 
     user@ubuntu-vm:/OE/sources/meta-pareon$ ./scripts/generate-conf.sh helloworld
-    require conf/distro/include/pareon.inc
-
     DEPENDS_append_pn-helloworld = " libpareon-verify"
-    CC_pn-helloworld        = "vfcc"
-    CXX_pn-helloworld       = "vf++"
+    CC_pn-helloworld             = "vfcc"
+    CXX_pn-helloworld            = "vf++"
 
 The script accepts multiple recipe names:
 
     user@ubuntu-vm:/OE/sources/meta-pareon$ ./scripts/generate-conf.sh helloworld bash
     DEPENDS_append_pn-helloworld = " libpareon-verify"
-    CC_pn-helloworld        = "vfcc"
-    CXX_pn-helloworld       = "vf++"
+    CC_pn-helloworld             = "vfcc"
+    CXX_pn-helloworld            = "vf++"
 
     DEPENDS_append_pn-bash = " libpareon-verify"
-    CC_pn-bash      = "vfcc"
-    CXX_pn-bash     = "vf++"
+    CC_pn-bash             = "vfcc"
+    CXX_pn-bash            = "vf++"
 
 Copy/paste the output into conf/local.conf.
 
@@ -58,11 +56,11 @@ Use the `pareon_run.sh` wrapper script to setup the necessary environment variab
 Pareon Profile
 -------------------------
 
-To use the Pareon Profile compiler and libraries, add the following line to your local.conf:
+To use the Pareon Profile compiler and libraries, add `libpareon-profile` do your project's DEPENDS and change the compilers to `profile-vfcc` and `profile-vf++`:
 
     DEPENDS_append_pn-helloworld = " libpareon-profile"
-    CC_pn-helloworld        = "profile-vfcc"
-    CXX_pn-helloworld       = "profile-vf++"
+    CC_pn-helloworld             = "profile-vfcc"
+    CXX_pn-helloworld            = "profile-vf++"
 
 Analyze the program on the target with:
 
