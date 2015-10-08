@@ -37,7 +37,7 @@ else
     then
         # call vfcc again and capture the output
         OUTPUT=$(timeout $TIMEOUT $VFCC "$@" 2>&1)
-        echo "cd $PWD && $VFCC $@\n$OUTPUT\n\n" >> $ERR
+        echo "cd $PWD && $VFCC ${@}\n${OUTPUT}\n\n" >> $ERR
     fi
 
     $GCC "$@"
