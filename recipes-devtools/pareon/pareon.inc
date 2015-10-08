@@ -8,6 +8,7 @@ PAREON_ARCH ?= "invalid"
 
 PAREON_VERSION ?= "2.24"
 PAREON_LOGFILE ?= ""
+PAREON_ERRFILE ?= ""
 
 PAREON_DIR = "/opt/vectorfabrics/pareon-${PAREON_VERSION}/${PAREON_PRODUCT}"
 PAREON_BINDIR = "${PAREON_DIR}/bin"

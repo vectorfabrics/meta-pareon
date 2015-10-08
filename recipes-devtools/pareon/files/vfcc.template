@@ -1,6 +1,8 @@
 #!/bin/sh
 
 LOG="@@LOG@@"
+ERR="@@ERR@@"
+
 VFCC="@@VFCC@@"
 GCC="@@GCC@@"
 
@@ -19,13 +21,22 @@ fi
 
 # If vfcc timeouts or fails, fallback to gcc.
 
-if ! timeout 5m $VFCC "$@"
+if timeout 5m $VFCC "$@"
 then
     if [ ! -z "$LOG" ]
     then
+        echo "SUCCESS cd $PWD && $VFCC $@" >> $LOG
+    fi
+else
+    if [ ! -z "$LOG" ]
+    then
+        echo "FAILURE cd $PWD && $VFCC $@" >> $LOG
+    fi
+    if [ ! -z "$ERR" ]
+    then
         # call vfcc again and capture the output
         OUTPUT=$(timeout 5m $VFCC "$@" 2>&1)
-        echo "cd $PWD && $VFCC $@\n$OUTPUT\n\n" >> $LOG
+        echo "cd $PWD && $VFCC $@\n$OUTPUT\n\n" >> $ERR
     fi
 
     $GCC "$@"

@@ -7,20 +7,21 @@ SRC_URI += "file://vfcc.template"
 do_compile() {
     # common variables
     awk -v LOG="${PAREON_LOGFILE}" \
+        -v ERR="${PAREON_ERRFILE}" \
         -v TOOLCHAIN="${STAGING_DIR_TARGET}${target_prefix}" \
         -v SYSROOT="${STAGING_DIR_TARGET}" \
         -v TRIPLE="${TARGET_SYS}" \
-        '{gsub(/@@LOG@@/, LOG); gsub(/@@TOOLCHAIN@@/, TOOLCHAIN); gsub(/@@SYSROOT@@/, SYSROOT); gsub(/@@TRIPLE@@/, TRIPLE); print}' \
+        '{gsub(/@@LOG@@/, LOG); {gsub(/@@ERR@@/, ERR); gsub(/@@TOOLCHAIN@@/, TOOLCHAIN); gsub(/@@SYSROOT@@/, SYSROOT); gsub(/@@TRIPLE@@/, TRIPLE); print}' \
         < ${WORKDIR}/vfcc.template > ${WORKDIR}/vfcc.template2
 
-    # c compiler
+    # C compiler
     awk -v GCC="${TARGET_SYS}-gcc ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
         -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vfcc ${TUNE_CCARGS}" \
         -v CONFIG="" \
         '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); gsub(/@@CONFIG@@/, CONFIG); print}' \
         < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/vfcc
 
-    # c++ compiler
+    # C++ compiler
     awk -v GCC="${TARGET_SYS}-g++ ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
         -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vf++ ${TUNE_CCARGS}" \
         -v CONFIG="${PAREON_DIR}/tools/config/c++.conf" \
