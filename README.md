@@ -14,6 +14,7 @@ The meta-pareon layer depends on:
 
 Please follow the recommended setup procedures of your OE distribution. For Angstrom that is http://www.angstrom-distribution.org/building-angstrom, other distros should have similar online resources.
 
+
 Usage
 -------------------------
 
@@ -39,12 +40,20 @@ The script accepts multiple recipe names:
 
 Copy/paste the output into conf/local.conf.
 
+
 Building cmake projects
 -------------------------
 
 Due to the way cmake tries to find the binutils executables, it is necessary to manually set the `_CMAKE_TOOLCHAIN_PREFIX` variable when building a project with the pareon compiler. You must add the following to your local.conf (replacing synergy with your cmake project):
 
     EXTRA_OECMAKE_append_pn-synergy = " -D_CMAKE_TOOLCHAIN_PREFIX=${HOST_PREFIX} "
+
+
+Packages that do not work with Pareon
+-------------------------
+
+Several packages are known to refuse instrumentation. They are listed in the file BLACKLIST.md.
+
 
 Analyzing programs on the target
 -------------------------
@@ -53,10 +62,12 @@ Use the `pareon_run.sh` wrapper script to setup the necessary environment variab
 
     pareon_run.sh program_name arguments
 
-Pareon Profile
+
+Using Pareon Profile
 -------------------------
 
-To use the Pareon Profile compiler and libraries, add `libpareon-profile` do your project's DEPENDS and change the compilers to `profile-vfcc` and `profile-vf++`:
+Default for the meta-pareon layer is to compile for Pareon Verify.
+To use the Pareon Profile compiler and libraries, add `libpareon-profile` to your project's DEPENDS and change the compilers to `profile-vfcc` and `profile-vf++`:
 
     DEPENDS_append_pn-helloworld = " libpareon-profile"
     CC_pn-helloworld             = "profile-vfcc"
@@ -66,6 +77,7 @@ Analyze the program on the target with:
 
     pareon_profile_run.sh program_name arguments
 
+
 Changing the Pareon version
 -------------------------
 
@@ -74,6 +86,7 @@ You may also specify the Pareon version through the `PAREON_VERSION` variable, l
     PAREON_VERSION = "2.23"
 
 This will use the compiler and libraries from the `/opt/vectorfabrics/pareon-2.23/` folder.
+
 
 Maintainers
 -------------------------
