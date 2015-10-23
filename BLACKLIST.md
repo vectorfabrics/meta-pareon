@@ -4,10 +4,18 @@ Blacklisted Packages for meta-pareon
 Introduction
 -------------------------
 
-The meta-pareon layer works with the majority of recipes available in the OpenEmbedded repositories.
-Note that only packages meant to appear on the target make sense to be instrumented.
+The meta-pareon layer works with the majority of recipes available in the
+OpenEmbedded repositories. Note that only packages meant to appear on the
+target make sense to be instrumented.
 
-A few packages cannot be instrumented using the meta-pareon layer.
+
+Not instrumented recipes
+-------------------------
+
+A few recipes cannot be instrumented using the meta-pareon layer.
+If you need one of these packages instrumented, please talk to the meta-pareon
+maintainers.
+
 Below is a list, accurate as of Pareon 2.24:
 
     alsa-lib
@@ -26,4 +34,18 @@ Below is a list, accurate as of Pareon 2.24:
     systemd
     util-linux
 
-If you need one of the above packages instrumented, please talk to the meta-pareon maintainers.
+
+Partially instrumented recipes
+-------------------------
+
+Some recipes when instrumented will create packages that are not fully
+instrumented, i.e. only some of the binaries are instrumented, some are not:
+
+Below is a list, accurate as of Pareon 2.24:
+
+    cpufrequtils
+    dosfstools
+    gnome-panel
+    iptables
+    libcap
+    ncurses
