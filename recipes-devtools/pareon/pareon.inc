@@ -6,7 +6,7 @@ PAREON_ARCH_x86 = "i686-linux-gnu"
 PAREON_ARCH_x86-64 = "x86_64-linux-gnu"
 PAREON_ARCH ?= "invalid"
 
-PAREON_VERSION ?= "2.24"
+PAREON_VERSION ?= "2.25"
 PAREON_LOGFILE ?= ""
 PAREON_ERRFILE ?= ""
 PAREON_TIMEOUT ?= "5m"
