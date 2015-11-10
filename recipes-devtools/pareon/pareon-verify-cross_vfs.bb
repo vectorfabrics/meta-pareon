@@ -9,4 +9,6 @@ LIC_FILES_CHKSUM = "file://${PAREON_DIR}/EULA.exec;md5=1c43b59db6eab4e68de955515
 do_install_append() {
     ln -s verify-vfcc ${D}${bindir}/vfcc
     ln -s verify-vf++ ${D}${bindir}/vf++
+    ln -s try-verify-vfcc ${D}${bindir}/try-vfcc
+    ln -s try-verify-vf++ ${D}${bindir}/try-vf++
 }

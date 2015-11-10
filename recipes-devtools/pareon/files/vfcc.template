@@ -19,8 +19,6 @@ then
     unset VFCC_CONFIG
 fi
 
-# If vfcc fails, fallback to gcc.
-
 if $VFCC "$@"
 then
     if [ ! -z "$LOG" ]
@@ -28,6 +26,8 @@ then
         echo "SUCCESS cd $PWD && $VFCC $@" >> $LOG
     fi
 else
+    CODE=$?
+
     if [ ! -z "$LOG" ]
     then
         echo "FAILURE cd $PWD && $VFCC $@" >> $LOG
@@ -41,5 +41,11 @@ else
         echo >> $ERR
     fi
 
-    $GCC "$@"
+    # optionally fallback to GCC
+    if [ ! -z "$GCC" ]
+    then
+        $GCC "$@"
+    else
+        exit $CODE
+    fi
 fi

@@ -18,16 +18,28 @@ do_compile() {
         < ${WORKDIR}/vfcc.template > ${WORKDIR}/vfcc.template2
 
     # C compiler
-    awk -v GCC="${TARGET_SYS}-gcc ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
+    awk -v GCC="" \
         -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vfcc ${TUNE_CCARGS}" \
         '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); print}' \
         < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/vfcc
 
+    # C compiler with GCC fallback
+    awk -v GCC="${TARGET_SYS}-gcc ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
+        -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vfcc ${TUNE_CCARGS}" \
+        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); print}' \
+        < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/try-vfcc
+
     # C++ compiler
-    awk -v GCC="${TARGET_SYS}-g++ ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
+    awk -v GCC="" \
         -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vf++ ${TUNE_CCARGS}" \
         '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); print}' \
         < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/vf++
+
+    # C++ compiler with GCC fallback
+    awk -v GCC="${TARGET_SYS}-g++ ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
+        -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vf++ ${TUNE_CCARGS}" \
+        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); print}' \
+        < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/try-vf++
 }
 
 do_install() {
@@ -35,6 +47,10 @@ do_install() {
     install -d ${D}${bindir}
     cp -a ${WORKDIR}/vfcc ${D}${bindir}/${PAREON_PRODUCT}-vfcc
     cp -a ${WORKDIR}/vf++ ${D}${bindir}/${PAREON_PRODUCT}-vf++
+    cp -a ${WORKDIR}/try-vfcc ${D}${bindir}/try-${PAREON_PRODUCT}-vfcc
+    cp -a ${WORKDIR}/try-vf++ ${D}${bindir}/try-${PAREON_PRODUCT}-vf++
     chmod +x ${D}${bindir}/${PAREON_PRODUCT}-vfcc
     chmod +x ${D}${bindir}/${PAREON_PRODUCT}-vf++
+    chmod +x ${D}${bindir}/try-${PAREON_PRODUCT}-vfcc
+    chmod +x ${D}${bindir}/try-${PAREON_PRODUCT}-vf++
 }
