@@ -2,7 +2,6 @@
 
 LOG="@@LOG@@"
 ERR="@@ERR@@"
-TIMEOUT="@@TIMEOUT@@"
 
 VFCC="@@VFCC@@"
 GCC="@@GCC@@"
@@ -20,9 +19,9 @@ then
     unset VFCC_CONFIG
 fi
 
-# If vfcc timeouts or fails, fallback to gcc.
+# If vfcc fails, fallback to gcc.
 
-if timeout $TIMEOUT $VFCC "$@"
+if $VFCC "$@"
 then
     if [ ! -z "$LOG" ]
     then
@@ -36,7 +35,7 @@ else
     if [ ! -z "$ERR" ]
     then
         # call vfcc again and capture the output
-        OUTPUT=$(timeout $TIMEOUT $VFCC "$@" 2>&1)
+        OUTPUT=$($VFCC "$@" 2>&1)
         echo "cd $PWD && $VFCC $@" >> $ERR
         echo "$OUTPUT" >> $ERR
         echo >> $ERR
