@@ -1,11 +1,11 @@
 DESCRIPTION = "Minimal Hello world!"
 LICENSE = "GPL"
-LIC_FILES_CHKSUM = "file://helloworld.c;md5=5251979965bb2281b6a6dc1eb7fd64bc"
+LIC_FILES_CHKSUM = "file://helloworld.c;md5=0790c8c6a3871d0c3bed428b4ae240c4"
 
 do_fetch () {
 	mkdir -p ${S}
 	cd ${S}
-	printf "#include <stdio.h>\nint main(void)\n{\n\tprintf(\"Hello world!\\\n\");\twhile(1);\n\treturn 0;\n}\n" >helloworld.c
+	printf "#include <stdio.h>\nint main(void)\n{\n\tprintf(\"Hello world!\\\n\");\n\treturn 0;\n}\n" >helloworld.c
 }
 
 do_compile () {
