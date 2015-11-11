@@ -10,9 +10,6 @@ INHIBIT_DEFAULT_DEPS = "1"
 # Supress QA warning: "No GNU_HASH in the elf binary"
 INSANE_SKIP_${PN} += "ldflags"
 
-# Depend on the cross-compiler
-DEPENDS = "pareon-${PAREON_PRODUCT}-cross"
-
 # libpareon.so dependencies
 RDEPENDS_${PN} = "libstdc++ glibc libgcc"
 
