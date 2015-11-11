@@ -6,6 +6,8 @@ ERR="@@ERR@@"
 VFCC="@@VFCC@@"
 GCC="@@GCC@@"
 
+FALLBACK="@@FALLBACK@@"
+
 export ARM_TOOLCHAIN="@@TOOLCHAIN@@"
 export ARM_SYSROOT="@@SYSROOT@@"
 export ARM_HF_TOOLCHAIN="@@TOOLCHAIN@@"
@@ -17,6 +19,24 @@ export VFCC_CONFIG="@@CONFIG@@"
 if [ -z "$VFCC_CONFIG" ] || [ ! -f "$VFCC_CONFIG" ]
 then
     unset VFCC_CONFIG
+fi
+
+if [ ! -z "$PAREON_EXCLUDE" ]
+then
+    for x in $PAREON_EXCLUDE
+    do
+        if pwd | fgrep -q "$x"
+        then
+
+            if [ ! -z "$LOG" ]
+            then
+                echo "EXCLUDE cd $PWD && $VFCC $@" >> $LOG
+            fi
+
+            $GCC "$@"
+            exit $?
+        fi
+    done
 fi
 
 if $VFCC "$@"
@@ -42,7 +62,7 @@ else
     fi
 
     # optionally fallback to GCC
-    if [ ! -z "$GCC" ]
+    if [ ! -z "$FALLBACK" ]
     then
         $GCC "$@"
     else

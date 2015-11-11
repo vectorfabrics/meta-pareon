@@ -22,27 +22,31 @@ do_compile() {
         < ${WORKDIR}/vfcc.template > ${WORKDIR}/vfcc.template2
 
     # C compiler
-    awk -v GCC="" \
+    awk -v GCC="${TARGET_SYS}-gcc ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
         -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vfcc ${TUNE_CCARGS}" \
-        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); print}' \
+        -v FALLBACK="" \
+        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); gsub(/@@FALLBACK@@/, FALLBACK); print}' \
         < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/vfcc
 
     # C compiler with GCC fallback
     awk -v GCC="${TARGET_SYS}-gcc ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
         -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vfcc ${TUNE_CCARGS}" \
-        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); print}' \
+        -v FALLBACK="1" \
+        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); gsub(/@@FALLBACK@@/, FALLBACK); print}' \
         < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/try-vfcc
 
     # C++ compiler
-    awk -v GCC="" \
+    awk -v GCC="${TARGET_SYS}-g++ ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
         -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vf++ ${TUNE_CCARGS}" \
-        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); print}' \
+        -v FALLBACK="" \
+        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); gsub(/@@FALLBACK@@/, FALLBACK); print}' \
         < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/vf++
 
     # C++ compiler with GCC fallback
     awk -v GCC="${TARGET_SYS}-g++ ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
         -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vf++ ${TUNE_CCARGS}" \
-        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); print}' \
+        -v FALLBACK="1" \
+        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); gsub(/@@FALLBACK@@/, FALLBACK); print}' \
         < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/try-vf++
 }
 
