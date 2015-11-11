@@ -20,33 +20,28 @@ Usage
 
 Add this layer to your layerstack the way you usually do, this differs between projects using OpenEmbedded. The steps should include updating conf/bblayers.conf. Please refer to the documenation of your project for the exact steps.
 
-To (re)build recipes with the pareon compiler run the generator script:
+To (re)build recipes with the Pareon compiler, add the following to your conf/local.conf:
 
-    user@ubuntu-vm:/OE/sources/meta-pareon$ ./scripts/generate-conf.sh helloworld
-    DEPENDS_append_pn-helloworld = " libpareon-verify"
-    CC_pn-helloworld             = "vfcc"
-    CXX_pn-helloworld            = "vf++"
+    TOOLCHAIN_pn-<recipe> = "pareon-verify"
 
-The script accepts multiple recipe names:
+Alternatively, run the generator script. The script accepts multiple recipe names:
 
     user@ubuntu-vm:/OE/sources/meta-pareon$ ./scripts/generate-conf.sh helloworld bash
-    DEPENDS_append_pn-helloworld = " libpareon-verify"
-    CC_pn-helloworld             = "vfcc"
-    CXX_pn-helloworld            = "vf++"
-
-    DEPENDS_append_pn-bash = " libpareon-verify"
-    CC_pn-bash             = "vfcc"
-    CXX_pn-bash            = "vf++"
+    TOOLCHAIN_pn-helloworld = "pareon-verify"
+    TOOLCHAIN_pn-bash = "pareon-verify"
 
 Copy/paste the output into conf/local.conf.
 
 
-Building cmake projects
+Available toolchains
 -------------------------
 
-Due to the way cmake tries to find the binutils executables, it is necessary to manually set the `_CMAKE_TOOLCHAIN_PREFIX` variable when building a project with the pareon compiler. You must add the following to your local.conf (replacing synergy with your cmake project):
+* pareon-verify
+* pareon-profile
+* pareon-verify-with-fallback
+* pareon-profile-with-fallback
 
-    EXTRA_OECMAKE_append_pn-synergy = " -D_CMAKE_TOOLCHAIN_PREFIX=${HOST_PREFIX} "
+The last two toolchains fallback to GCC for any specific file that fails to compile with vfcc.
 
 
 Packages that do not work with Pareon
@@ -62,30 +57,19 @@ Use the `pareon_run.sh` wrapper script to setup the necessary environment variab
 
     pareon_run.sh program_name arguments
 
-
-Using Pareon Profile
--------------------------
-
-Default for the meta-pareon layer is to compile for Pareon Verify.
-To use the Pareon Profile compiler and libraries, add `libpareon-profile` to your project's DEPENDS and change the compilers to `profile-vfcc` and `profile-vf++`:
-
-    DEPENDS_append_pn-helloworld = " libpareon-profile"
-    CC_pn-helloworld             = "profile-vfcc"
-    CXX_pn-helloworld            = "profile-vf++"
-
-Analyze the program on the target with:
+For Pareon Profile, use `pareon_profile_run.sh`:
 
     pareon_profile_run.sh program_name arguments
 
 
-Changing the Pareon version
+Using a different version of Pareon
 -------------------------
 
 You may also specify the Pareon version through the `PAREON_VERSION` variable, like so:
 
-    PAREON_VERSION = "2.23"
+    PAREON_VERSION = "2.26"
 
-This will use the compiler and libraries from the `/opt/vectorfabrics/pareon-2.23/` folder.
+This will use the compiler and libraries from the `/opt/vectorfabrics/pareon-2.26/` folder.
 
 
 Maintainers
