@@ -3,23 +3,60 @@
 LOG="@@LOG@@"
 ERR="@@ERR@@"
 
-VFCC="@@VFCC@@"
-GCC="@@GCC@@"
-
-FALLBACK="@@FALLBACK@@"
+# export PATH="@@GCCDIR@@:$PATH"
 
 export ARM_TOOLCHAIN="@@TOOLCHAIN@@"
 export ARM_SYSROOT="@@SYSROOT@@"
 export ARM_HF_TOOLCHAIN="@@TOOLCHAIN@@"
 export ARM_HF_SYSROOT="@@SYSROOT@@"
+export I686_TOOLCHAIN="@@TOOLCHAIN@@"
+export I686_SYSROOT="@@SYSROOT@@"
+export X86_64_TOOLCHAIN="@@TOOLCHAIN@@"
+export X86_64_SYSROOT="@@SYSROOT@@"
+
 export VF_TARGET_TRIPLE="@@TRIPLE@@"
 
-export VFCC_CONFIG="@@CONFIG@@"
-
-if [ -z "$VFCC_CONFIG" ] || [ ! -f "$VFCC_CONFIG" ]
+if [ "@@ARCH@@" == "i686-linux-gnu" ] || [ "@@ARCH@@" == "x86_64-linux-gnu" ]
 then
-    unset VFCC_CONFIG
+    export VF_ANA_PLATFORM_FLAVOR="@@FLAVOR@@"
 fi
+
+export GCC="@@TRIPLE@@-g@@SUFFIX@@ @@TUNE@@ --sysroot=@@SYSROOT@@"
+export VFCC="@@ARCH@@-vf@@SUFFIX@@"
+
+if [ "@@INSTALLTYPE@@" == "opt" ]
+then
+    export VFCC="@@DIR@@/bin/${VFCC}"
+else
+    export VF_INSTALL_BASE="@@DIR@@"
+    export VFUTILINSTALL="${VF_INSTALL_BASE}/vfutil"
+    export VFCCINSTALL="${VF_INSTALL_BASE}/vfcompiler"
+    export VFPLATFORMINSTALL="${VF_INSTALL_BASE}/vfplatform"
+    export VFINFRAINSTALL="${VF_INSTALL_BASE}/vfinfra"
+    export VFLIBINSTALL="${VF_INSTALL_BASE}/vflib"
+    export VFSERVICEINSTALL="${VF_INSTALL_BASE}/vfservice"
+    export VFEXECINSTALL="${VF_INSTALL_BASE}/vfexec"
+    export VFCXXINSTALL="${VF_INSTALL_BASE}/vfcxx"
+    export VFSERVERINSTALL="${VF_INSTALL_BASE}/vfserver"
+    export VFHELPINSTALL="${VF_INSTALL_BASE}/vfhelp"
+    export VFEXAMPLEINSTALL="${VF_INSTALL_BASE}/vfexample"
+    export VFUIINSTALL="${VF_INSTALL_BASE}/vfui"
+    export VFTASKSINSTALL="${VF_INSTALL_BASE}/vftasks"
+
+    export VFCC="${VFCCINSTALL}/@@PRODUCT@@/bin/${VFCC}"
+fi
+
+TUNE="@@TUNE@@"
+
+# remove invalid compiler options
+
+ARGS=()
+for var in $TUNE "$@"
+do
+    [ "$var" != '-mfpmath=sse' ] && ARGS+=("$var")
+done
+
+# compile paths in PAREON_EXCLUDE with gcc
 
 if [ ! -z "$PAREON_EXCLUDE" ]
 then
@@ -30,7 +67,7 @@ then
 
             if [ ! -z "$LOG" ]
             then
-                echo "EXCLUDE cd $PWD && $VFCC $@" >> $LOG
+                echo "EXCLUDE cd $PWD && $0 $@" >> $LOG
             fi
 
             $GCC "$@"
@@ -39,30 +76,32 @@ then
     done
 fi
 
-if $VFCC "$@"
+# compile
+
+if $VFCC "${ARGS[@]}"
 then
     if [ ! -z "$LOG" ]
     then
-        echo "SUCCESS cd $PWD && $VFCC $@" >> $LOG
+        echo "SUCCESS cd $PWD && $0 $@" >> $LOG
     fi
 else
     CODE=$?
 
     if [ ! -z "$LOG" ]
     then
-        echo "FAILURE cd $PWD && $VFCC $@" >> $LOG
+        echo "FAILURE cd $PWD && $0 $@" >> $LOG
     fi
     if [ ! -z "$ERR" ]
     then
         # call vfcc again and capture the output
-        OUTPUT=$($VFCC "$@" 2>&1)
-        echo "cd $PWD && $VFCC $@" >> $ERR
+        OUTPUT=$($VFCC "${ARGS[@]}" 2>&1)
+        echo "cd $PWD && $0 $@" >> $ERR
         echo "$OUTPUT" >> $ERR
         echo >> $ERR
     fi
 
     # optionally fallback to GCC
-    if [ ! -z "$FALLBACK" ]
+    if [ ! -z "@@FALLBACK@@" ]
     then
         $GCC "$@"
     else

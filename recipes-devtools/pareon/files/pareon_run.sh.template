@@ -21,6 +21,6 @@ fi
 
 # Location of libpareon.so and libstdc++.so
 
-export LD_LIBRARY_PATH="@@PAREON_LIBDIR@@:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="@@PAREON_INSTALLDIR@@:$LD_LIBRARY_PATH"
 
 exec "$@"

@@ -71,6 +71,8 @@ You may also specify the Pareon version through the `PAREON_VERSION` variable, l
 
 This will use the compiler and libraries from the `/opt/vectorfabrics/pareon-2.26/` folder.
 
+By default meta-pareon will use the latest Pareon installed.
+
 
 Maintainers
 -------------------------

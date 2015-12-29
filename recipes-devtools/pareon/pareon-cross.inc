@@ -1,6 +1,4 @@
 DESCRIPTION = "Wrapper script for the Pareon compiler"
-LICENSE = "Proprietary"
-LIC_FILES_CHKSUM = "file://${PAREON_DIR}/EULA.exec;md5=1c43b59db6eab4e68de95551563c708b"
 
 require pareon.inc
 
@@ -15,38 +13,69 @@ do_compile() {
         -v TOOLCHAIN="${STAGING_DIR_TARGET}${target_prefix}" \
         -v SYSROOT="${STAGING_DIR_TARGET}" \
         -v TRIPLE="${TARGET_SYS}" \
-        -v CONFIG="${PAREON_DIR}/tools/config/c++.conf" \
-        '{gsub(/@@LOG@@/, LOG); gsub(/@@ERR@@/, ERR); \
-          gsub(/@@TOOLCHAIN@@/, TOOLCHAIN); gsub(/@@SYSROOT@@/, SYSROOT); \
-          gsub(/@@TRIPLE@@/, TRIPLE); gsub(/@@CONFIG@@/, CONFIG); print}' \
+        -v TUNE="${TUNE_CCARGS}" \
+        -v GCCDIR="${STAGING_BINDIR_TOOLCHAIN}" \
+        -v INSTALLTYPE="${PAREON_INSTALL_TYPE}" \
+        -v PRODUCT="${PAREON_PRODUCT}" \
+        -v ARCH="${PAREON_ARCH}" \
+        -v FLAVOR="${PAREON_FLAVOR}" \
+        -v DIR="${PAREON_DIR}" \
+        '{ \
+          gsub(/@@LOG@@/, LOG); \
+          gsub(/@@ERR@@/, ERR); \
+          gsub(/@@TOOLCHAIN@@/, TOOLCHAIN); \
+          gsub(/@@SYSROOT@@/, SYSROOT); \
+          gsub(/@@TRIPLE@@/, TRIPLE); \
+          gsub(/@@CONFIG@@/, CONFIG); \
+          gsub(/@@TUNE@@/, TUNE); \
+          gsub(/@@GCCDIR@@/, GCCDIR); \
+          gsub(/@@INSTALLTYPE@@/, INSTALLTYPE); \
+          gsub(/@@PRODUCT@@/, PRODUCT); \
+          gsub(/@@ARCH@@/, ARCH); \
+          gsub(/@@FLAVOR@@/, FLAVOR); \
+          gsub(/@@DIR@@/, DIR); \
+          print \
+         }' \
         < ${WORKDIR}/vfcc.template > ${WORKDIR}/vfcc.template2
 
     # C compiler
-    awk -v GCC="${TARGET_SYS}-gcc ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
-        -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vfcc ${TUNE_CCARGS}" \
+    awk -v SUFFIX="cc" \
         -v FALLBACK="" \
-        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); gsub(/@@FALLBACK@@/, FALLBACK); print}' \
+        '{ \
+          gsub(/@@SUFFIX@@/, SUFFIX); \
+          gsub(/@@FALLBACK@@/, FALLBACK); \
+          print \
+         }' \
         < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/vfcc
 
     # C compiler with GCC fallback
-    awk -v GCC="${TARGET_SYS}-gcc ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
-        -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vfcc ${TUNE_CCARGS}" \
+    awk -v SUFFIX="cc" \
         -v FALLBACK="1" \
-        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); gsub(/@@FALLBACK@@/, FALLBACK); print}' \
+        '{ \
+          gsub(/@@SUFFIX@@/, SUFFIX); \
+          gsub(/@@FALLBACK@@/, FALLBACK); \
+          print \
+         }' \
         < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/try-vfcc
 
     # C++ compiler
-    awk -v GCC="${TARGET_SYS}-g++ ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
-        -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vf++ ${TUNE_CCARGS}" \
+    awk -v SUFFIX="++" \
         -v FALLBACK="" \
-        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); gsub(/@@FALLBACK@@/, FALLBACK); print}' \
+        '{ \
+          gsub(/@@SUFFIX@@/, SUFFIX); \
+          gsub(/@@FALLBACK@@/, FALLBACK); \
+          print \
+         }' \
         < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/vf++
 
     # C++ compiler with GCC fallback
-    awk -v GCC="${TARGET_SYS}-g++ ${TUNE_CCARGS} --sysroot=${STAGING_DIR_TARGET}" \
-        -v VFCC="${PAREON_BINDIR}/${PAREON_ARCH}-vf++ ${TUNE_CCARGS}" \
+    awk -v SUFFIX="++" \
         -v FALLBACK="1" \
-        '{gsub(/@@GCC@@/, GCC); gsub(/@@VFCC@@/, VFCC); gsub(/@@FALLBACK@@/, FALLBACK); print}' \
+        '{ \
+          gsub(/@@SUFFIX@@/, SUFFIX); \
+          gsub(/@@FALLBACK@@/, FALLBACK); \
+          print \
+         }' \
         < ${WORKDIR}/vfcc.template2 > ${WORKDIR}/try-vf++
 }
 
