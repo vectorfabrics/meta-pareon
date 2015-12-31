@@ -32,11 +32,11 @@ PAREON_DIR_pareon-opt        = "/opt/vectorfabrics/pareon-${PAREON_VERSION}/${PA
 PAREON_LIBDIR_pareon-opt     = "${PAREON_DIR}/${PAREON_ARCH}/${PAREON_FLAVOR}/lib"
 PAREON_CXXDIR_pareon-opt     = "${PAREON_DIR}/c++/${PAREON_FLAVOR}/${PAREON_ARCH}/lib"
 PAREON_LICENSE_pareon-opt    = "${PAREON_DIR}/EULA.exec"
-PAREON_INSTALLDIR_pareon-opt = "${PAREON_DIR}/lib"
+PAREON_INSTALLDIR_pareon-opt = "${PAREON_DIR}"
 
 #PAREON_DIR_pareon-dev       = must be defined in local.conf
 PAREON_LIBDIR_pareon-dev     = "${PAREON_DIR}/vfexec/${PAREON_PRODUCT}/${PAREON_ARCH}/${PAREON_FLAVOR}/lib"
 PAREON_CXXDIR_pareon-dev     = "${PAREON_DIR}/vfcxx/${PAREON_PRODUCT}/c++/${PAREON_FLAVOR}/${PAREON_ARCH}/lib"
 # The license is not in the install tree, so we use any one from a packaged version
 PAREON_LICENSE_pareon-dev    = "/opt/vectorfabrics/pareon-2.25/verify/EULA.exec"
-PAREON_INSTALLDIR_pareon-dev = "/opt/vectorfabrics/pareon-0.0/${PAREON_PRODUCT}/lib"
+PAREON_INSTALLDIR_pareon-dev = "/opt/vectorfabrics/pareon-0.0/${PAREON_PRODUCT}"

@@ -5,15 +5,17 @@ require pareon.inc
 # Sabotage the default dependencies to avoid dependency loops trying to build lowlevel recipes with pareon
 INHIBIT_DEFAULT_DEPS = "1"
 
-# Supress QA warning: "No GNU_HASH in the elf binary"
-INSANE_SKIP_${PN} += "ldflags"
+# Supress QA warnings:
+#  "No GNU_HASH in the elf binary"
+#  "ELF binary has relocations in .text"
+INSANE_SKIP_${PN} += "ldflags textrel"
 
 # libpareon.so dependencies
 RDEPENDS_${PN} = "libstdc++ glibc libgcc"
 
 SRC_URI += "file://pareon_run.sh.template"
 
-FILES_${PN} += "${PAREON_INSTALLDIR}/libpareon*.so.*"
+FILES_${PN} += "${PAREON_INSTALLDIR}/libpareon*.so.* ${PAREON_INSTALLDIR}/pareonmux"
 FILES_${PN}-dbg += "${PAREON_INSTALLDIR}/.debug"
 
 do_compile() {
@@ -29,5 +31,6 @@ do_install() {
 
     # copy libpareon
     install -d ${D}${PAREON_INSTALLDIR}
-    cp -a ${PAREON_LIBDIR}/libpareon*.so.* ${D}${PAREON_INSTALLDIR}
+    install -m 0755 ${PAREON_LIBDIR}/pareonmux ${D}${PAREON_INSTALLDIR}
+    install -m 0755 ${PAREON_LIBDIR}/libpareon*.so.* ${D}${PAREON_INSTALLDIR}
 }
