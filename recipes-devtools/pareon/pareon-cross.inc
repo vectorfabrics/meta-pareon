@@ -82,12 +82,10 @@ do_compile() {
 do_install() {
     # copy wrapper script
     install -d ${D}${bindir}
-    cp -a ${WORKDIR}/vfcc ${D}${bindir}/${PAREON_PRODUCT}-vfcc
-    cp -a ${WORKDIR}/vf++ ${D}${bindir}/${PAREON_PRODUCT}-vf++
-    cp -a ${WORKDIR}/try-vfcc ${D}${bindir}/try-${PAREON_PRODUCT}-vfcc
-    cp -a ${WORKDIR}/try-vf++ ${D}${bindir}/try-${PAREON_PRODUCT}-vf++
-    chmod +x ${D}${bindir}/${PAREON_PRODUCT}-vfcc
-    chmod +x ${D}${bindir}/${PAREON_PRODUCT}-vf++
-    chmod +x ${D}${bindir}/try-${PAREON_PRODUCT}-vfcc
-    chmod +x ${D}${bindir}/try-${PAREON_PRODUCT}-vf++
+
+    # some configure scripts detect the compiler by matching the file name against *gcc*
+    install -m 0755 ${WORKDIR}/vfcc ${D}${bindir}/${PAREON_PRODUCT}-gcc
+    install -m 0755 ${WORKDIR}/vf++ ${D}${bindir}/${PAREON_PRODUCT}-g++
+    install -m 0755 ${WORKDIR}/try-vfcc ${D}${bindir}/try-${PAREON_PRODUCT}-gcc
+    install -m 0755 ${WORKDIR}/try-vf++ ${D}${bindir}/try-${PAREON_PRODUCT}-g++
 }
