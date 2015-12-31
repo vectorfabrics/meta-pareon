@@ -53,6 +53,11 @@ TUNE="@@TUNE@@"
 ARGS=()
 for var in $TUNE "$@"
 do
+    if [ "$var" == '--version' ]
+    then
+        $GCC "$@"
+        exit 0
+    fi
     [ "$var" != '-mfpmath=sse' ] && ARGS+=("$var")
 done
 
